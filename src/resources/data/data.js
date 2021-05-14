@@ -1,3 +1,4 @@
 const USERS = [];
+const BOARDS = [];
 
-module.exports = { USERS };
+module.exports = { USERS, BOARDS };
