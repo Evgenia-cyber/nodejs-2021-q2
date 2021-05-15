@@ -1,9 +1,6 @@
 const { BOARDS } = require('../data/data.js');
 const Board = require('./board.model');
 const Column = require('./column.model');
-// const {
-//   deleteTasksWhenBoardDeleted,
-// } = require('../tasks/task.memory.repository');
 
 const getAll = async () => BOARDS;
 
@@ -40,7 +37,6 @@ const del = async (id) => {
   if (index < 0) {
     return null;
   }
-  // await deleteTasksWhenBoardDeleted(id);
   BOARDS.splice(index, 1);
   return true;
 };

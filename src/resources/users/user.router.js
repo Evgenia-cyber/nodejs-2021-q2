@@ -27,7 +27,6 @@ router.route('/:id').get(async (req, res) => {
     // exclude secret fields like "password"
     await res
       .status(200)
-      // .json({ message: `Successful operation`, body: User.toResponse(user) });
       .json(User.toResponse(user));
   } else {
     await res.status(404).json({ error: 'User not found' });
@@ -48,9 +47,9 @@ router.route('/:id').put(async (req, res) => {
 
 router.route('/:id').delete(async (req, res) => {
   const { id } = req.params;
-  await tasksService.updateTasksWhenUserDeleted(id);
-  const isDeleted = await usersService.del(id);
-  if (isDeleted) {
+  const isTasksUpdated = await tasksService.updateTasksWhenUserDeleted(id);
+  const isUserDeleted = await usersService.del(id);
+  if (isTasksUpdated && isUserDeleted) {
     await res.status(204).json();
   } else {
     await res.status(404).json({ error: 'User not found' });

@@ -40,9 +40,9 @@ router.route('/:id').put(async (req, res) => {
 
 router.route('/:id').delete(async (req, res) => {
   const { id } = req.params;
-  await tasksService.deleteTasksWhenBoardDeleted(id);
-  const isDeleted = await boardsService.del(id);
-  if (isDeleted) {
+  const isTasksDeleted = await tasksService.deleteTasksWhenBoardDeleted(id);
+  const isBoardDeleted = await boardsService.del(id);
+  if (isTasksDeleted && isBoardDeleted) {
     await res.status(204).json();
   } else {
     await res.status(404).json({ error: 'Board not found' });

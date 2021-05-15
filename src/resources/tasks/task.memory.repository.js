@@ -59,6 +59,7 @@ const del = async (boardId, taskId) => {
 
 const deleteTasksWhenBoardDeleted = async (boardId) => {
   tasks = tasks.filter((task) => task.boardId !== boardId);
+  return true;
 };
 
 const updateTasksWhenUserDeleted = async (userId) => {
@@ -76,6 +77,7 @@ const updateTasksWhenUserDeleted = async (userId) => {
     }
     return copyTask;
   });
+  return true;
 };
 
 module.exports = {
