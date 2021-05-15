@@ -1,5 +1,8 @@
 const { USERS } = require('../data/data.js');
 const User = require('./user.model.js');
+// const {
+//   updateTasksWhenUserDeleted,
+// } = require('../tasks/task.memory.repository');
 
 const getAll = async () => USERS;
 
@@ -28,11 +31,12 @@ const update = async (id, body) => {
   return USERS[index];
 };
 
-const del = (id) => {
+const del = async (id) => {
   const index = USERS.findIndex((user) => user.id === id);
   if (index < 0) {
     return null;
   }
+  // await updateTasksWhenUserDeleted(id);
   USERS.splice(index, 1);
   return true;
 };
