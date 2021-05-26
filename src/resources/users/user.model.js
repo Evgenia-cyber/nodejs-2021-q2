@@ -4,7 +4,7 @@ const { v4: uuidv4 } = require('uuid');
 class User {
   /**
    * Create a user's instance.
-   * @param {Object} user={}
+   * @param {Object} user={} - information about the user
    * @param {string} [user.id] - The user's id. Calculated automatically.
    * @param {string} user.name=USER - The user's name.
    * @param {string} user.login=user - The user's login.
