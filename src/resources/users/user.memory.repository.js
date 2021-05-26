@@ -1,6 +1,10 @@
 const { USERS } = require('../data/data.js');
 const User = require('./user.model.js');
 
+/**
+ * Get all users
+ * @returns {Promise} Promise object represents an array of all users or an empty array
+ */
 const getAll = async () => USERS;
 
 const create = async (body) => {
