@@ -9,7 +9,7 @@
     "encoding": "utf8",
     "recurse": true,
     "destination": "./jsdocs/",
-    "template": "./custom-jsdoc-template",
-    "readme": "./jsdoc-readme/readme.md"
+    "template": "node_modules/better-docs",
+    "readme": "./jsdoc-utils/readme.md"
   }
 }

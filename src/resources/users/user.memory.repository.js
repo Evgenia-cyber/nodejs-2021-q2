@@ -1,13 +1,17 @@
-const { USERS } = require('../data/data.js');
-const User = require('./user.model.js');
+/**
+ * @module userRepository
+ */
 
 /**
  * A user's data from request body
- * @typedef {Object} BodyUser
+ * @typedef {Object} UserDataFromRequestBody
  * @property {string} name - The user's name.
  * @property {string} login - The user's login.
  * @property {string} password - The user's password.
  */
+
+const { USERS } = require('../data/data.js');
+const User = require('./user.model.js');
 
 /**
  * Get all users
@@ -17,8 +21,8 @@ const getAll = async () => USERS;
 
 /**
  * Create new user
- * @param {BodyUser} body - information about the user
- * @returns {Promise<User>} Promise object represents new user or null
+ * @param {UserDataFromRequestBody} body - Information about the user
+ * @returns {Promise<User|null>} Promise object represents new user or null
  */
 const create = async (body) => {
   const { name, login, password } = body;
@@ -33,15 +37,15 @@ const create = async (body) => {
 /**
  * Get user by user's id
  * @param {string} id - The user's id.
- * @returns {Promise<User>} Promise object represents user or undefined
+ * @returns {Promise<User|undefined>} Promise object represents user or undefined
  */
 const getById = async (id) => USERS.find((user) => user.id === id);
 
 /**
  * Update user by user's id
  * @param {string} id - The user's id.
- * @param {BodyUser} body - new information about the user
- * @returns {Promise<User>} Promise object represents updated user or null
+ * @param {UserDataFromRequestBody} body - New information about the user
+ * @returns {Promise<User|null>} Promise object represents updated user or null
  */
 const update = async (id, body) => {
   const { name, login, password } = body;
@@ -59,7 +63,7 @@ const update = async (id, body) => {
 /**
  * Delete user by user's id
  * @param {string} id - The user's id.
- * @returns {Promise} Promise object represents null or true
+ * @returns {Promise<null|true>} Promise object represents null or true
  */
 const del = async (id) => {
   const index = USERS.findIndex((user) => user.id === id);
