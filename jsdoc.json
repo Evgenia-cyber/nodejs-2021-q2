@@ -8,6 +8,7 @@
   "opts": {
     "encoding": "utf8",
     "destination": "jsdocs/",
-    "recurse": true
+    "recurse": true,
+    "template": "custom-jsdoc-template"
   }
 }
