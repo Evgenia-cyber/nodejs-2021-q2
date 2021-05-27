@@ -5,10 +5,10 @@
 /**
  * A task's data from request body
  * @typedef {Object} TaskDataFromRequestBody
- * @param {string} task.title - The task's title.
- * @param {number} task.order - The task's order.
- * @param {string} task.description - The task's description.
- * @param {string|null} task.userId - The task's user id.
+ * @property {string} task.title - The task's title.
+ * @property {number} task.order - The task's order.
+ * @property {string} task.description - The task's description.
+ * @property {string|null} task.userId - The task's user id.
  */
 
 const tasksRepo = require('./task.memory.repository');
