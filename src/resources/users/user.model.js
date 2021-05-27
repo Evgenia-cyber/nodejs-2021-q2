@@ -4,11 +4,11 @@ const { v4: uuidv4 } = require('uuid');
 class User {
   /**
    * Create a user's instance.
-   * @param {Object} user={} - information about the user
+   * @param {Object} user - Information about the user. Default value: {}
    * @param {string} [user.id] - The user's id. Calculated automatically.
-   * @param {string} user.name=USER - The user's name.
-   * @param {string} user.login=user - The user's login.
-   * @param {string} user.password=P@55w0rd - The user's password.
+   * @param {string} user.name - The user's name. Default value: 'USER'
+   * @param {string} user.login - The user's login. Default value: 'user'
+   * @param {string} user.password - The user's password. Default value: 'P@55w0rd'
    */
   constructor({
     id = uuidv4(),

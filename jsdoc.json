@@ -10,6 +10,6 @@
     "recurse": true,
     "destination": "./jsdocs/",
     "template": "node_modules/better-docs",
-    "readme": "./jsdoc-utils/readme.md"
+    "readme": "./README.md"
   }
 }
