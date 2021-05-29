@@ -1,4 +1,5 @@
 import { IUser } from '../users/user.types';
+import { IBoard } from '../boards/board.types';
 
 /**
  * All database users
@@ -11,7 +12,7 @@ const USERS: IUser[] = [];
  *
  * @type {Board[]}
  */
-const BOARDS: any = [];
+const BOARDS: IBoard[] = [];
 
 /**
  * All database tasks

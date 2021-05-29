@@ -1,7 +1,5 @@
 import express from 'express';
-import { User } from './user.model';
-import { usersService } from './user.service';
-// import {tasksService} from '../tasks/task.service';
+import { boardsService } from './board.service';
 import { StatusCode, Messages } from '../../common/statusCodes';
 
 const tasksService = require('../tasks/task.service');
@@ -9,27 +7,27 @@ const tasksService = require('../tasks/task.service');
 const router = express.Router();
 
 router.route('/').get(async (_req, res) => {
-  const users = await usersService.getAll();
-  await res.status(StatusCode.OK).json(users.map(User.toResponse));
+  const boards = await boardsService.getAll();
+  await res.status(StatusCode.OK).json(boards);
 });
 
 router.route('/').post(async (req, res) => {
   const { body } = req;
-  const { name, login, password } = body;
-  if (!name || !login || !password) {
+  const { title, columns } = body;
+  if (!title || !columns) {
     await res
       .status(StatusCode.BAD_REQUEST)
       .json({ error: Messages.BAD_REQUEST });
   }
-  const newUser = await usersService.create(body);
-  await res.status(StatusCode.CREATED).json(User.toResponse(newUser));
+  const newBoard = await boardsService.create(body);
+  await res.status(StatusCode.CREATED).json(newBoard);
 });
 
 router.route('/:id').get(async (req, res) => {
   const { id } = req.params;
-  const user = await usersService.getById(id);
-  if (user) {
-    await res.status(StatusCode.OK).json(User.toResponse(user));
+  const board = await boardsService.getById(id);
+  if (board) {
+    await res.status(StatusCode.OK).json(board);
   } else {
     await res.status(StatusCode.NOT_FOUND).json({ error: Messages.NOT_FOUND });
   }
@@ -38,15 +36,15 @@ router.route('/:id').get(async (req, res) => {
 router.route('/:id').put(async (req, res) => {
   const { id } = req.params;
   const { body } = req;
-  const { name, login, password } = body;
-  if (!name || !login || !password) {
+  const { title, columns } = body;
+  if (!title || !columns) {
     await res
       .status(StatusCode.BAD_REQUEST)
       .json({ error: Messages.BAD_REQUEST });
   }
-  const user = await usersService.update(id, body);
-  if (user) {
-    await res.status(StatusCode.OK).json(User.toResponse(user));
+  const board = await boardsService.update(id, body);
+  if (board) {
+    await res.status(StatusCode.OK).json(board);
   } else {
     await res.status(StatusCode.NOT_FOUND).json({ error: Messages.NOT_FOUND });
   }
@@ -54,13 +52,13 @@ router.route('/:id').put(async (req, res) => {
 
 router.route('/:id').delete(async (req, res) => {
   const { id } = req.params;
-  const isTasksUpdated = await tasksService.updateTasksWhenUserDeleted(id);
-  const isUserDeleted = await usersService.del(id);
-  if (isTasksUpdated && isUserDeleted) {
+  const isTasksDeleted = await tasksService.deleteTasksWhenBoardDeleted(id);
+  const isBoardDeleted = await boardsService.del(id);
+  if (isTasksDeleted && isBoardDeleted) {
     await res.status(StatusCode.DELETED).json();
   } else {
     await res.status(StatusCode.NOT_FOUND).json({ error: Messages.NOT_FOUND });
   }
 });
 
-export { router };
+module.exports = router;
