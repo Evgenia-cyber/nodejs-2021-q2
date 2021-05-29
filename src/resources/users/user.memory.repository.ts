@@ -55,12 +55,19 @@ const update = async (
   body: IUserDataFromRequestBody
 ): Promise<IUser | undefined> => {
   const { name, login, password } = body;
+  console.log(name, login, password);
+  console.log('userId', id);
+  console.log('users', USERS);
   const index = USERS.findIndex((user) => user.id === id);
+  console.log(index);
   if (index < 0) {
     return undefined;
   }
   let user = USERS[index];
+  console.log(user);
   if (user && user.id) {
+    console.log(user.id);
+    console.log(1);
     user = { id: user.id, name, login, password };
     return user;
   }
