@@ -1,3 +1,7 @@
+import { USERS } from '../data/data';
+import { User } from './user.model';
+import { IUserDataFromRequestBody, IUser } from './user.types';
+
 /**
  * @module userRepository
  */
@@ -10,25 +14,21 @@
  * @property {string} password - The user's password.
  */
 
-const { USERS } = require('../data/data.js');
-const User = require('./user.model.js');
-
 /**
  * Get all users
+ *
  * @returns {Promise<User[]>} Promise object represents an array of all users or an empty array
  */
-const getAll = async () => USERS;
+const getAll = async (): Promise<IUser[] | []> => USERS;
 
 /**
  * Create new user
+ *
  * @param {UserDataFromRequestBody} body - Information about the user
- * @returns {Promise<User|null>} Promise object represents new user or null
+ * @returns {Promise<User>} Promise object represents new user
  */
-const create = async (body) => {
+const create = async (body: IUserDataFromRequestBody): Promise<IUser> => {
   const { name, login, password } = body;
-  if (!name || !login || !password) {
-    return null;
-  }
   const newUser = new User({ name, login, password });
   USERS.push(newUser);
   return newUser;
@@ -36,36 +36,44 @@ const create = async (body) => {
 
 /**
  * Get user by user's id
+ *
  * @param {string} id - The user's id.
  * @returns {Promise<User|undefined>} Promise object represents user or undefined
  */
-const getById = async (id) => USERS.find((user) => user.id === id);
+const getById = async (id: string): Promise<IUser | undefined> =>
+  USERS.find((user) => user.id === id);
 
 /**
  * Update user by user's id
+ *
  * @param {string} id - The user's id.
  * @param {UserDataFromRequestBody} body - New information about the user
- * @returns {Promise<User|null>} Promise object represents updated user or null
+ * @returns {Promise<User|undefined>} Promise object represents updated user or undefined
  */
-const update = async (id, body) => {
+const update = async (
+  id: string,
+  body: IUserDataFromRequestBody
+): Promise<IUser | undefined> => {
   const { name, login, password } = body;
-  if (!name || !login || !password) {
-    return null;
-  }
   const index = USERS.findIndex((user) => user.id === id);
   if (index < 0) {
-    return null;
+    return undefined;
   }
-  USERS[index] = { id: USERS[index].id, name, login, password };
-  return USERS[index];
+  let user = USERS[index];
+  if (user && user.id) {
+    user = { id: user.id, name, login, password };
+    return user;
+  }
+  return undefined;
 };
 
 /**
  * Delete user by user's id
+ *
  * @param {string} id - The user's id.
  * @returns {Promise<null|true>} Promise object represents null or true
  */
-const del = async (id) => {
+const del = async (id: string): Promise<null | true> => {
   const index = USERS.findIndex((user) => user.id === id);
   if (index < 0) {
     return null;
@@ -74,4 +82,4 @@ const del = async (id) => {
   return true;
 };
 
-module.exports = { getAll, create, getById, update, del };
+export { getAll, create, getById, update, del };
