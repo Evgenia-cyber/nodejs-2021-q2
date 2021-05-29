@@ -69,21 +69,13 @@ const update = async (
   const index = tasks.findIndex(
     (task) => task.boardId === boardId && task.id === taskId
   );
-  if (index < 0) {
-    return undefined;
-  }
-  let task = tasks[index];
-  if (task && task.id) {
-    task = {
-      id: task.id,
-      title,
-      order,
-      description,
-      userId,
-      boardId,
-      columnId,
-    };
-    return task;
+  if (index !== -1) {
+    let task = tasks[index];
+    if (task && task.id) {
+      task = { ...task, title, order, description, userId, boardId, columnId };
+      tasks.splice(index, 1, task);
+      return task;
+    }
   }
   return undefined;
 };

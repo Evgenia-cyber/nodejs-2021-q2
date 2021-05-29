@@ -55,13 +55,13 @@ const update = async (
 ): Promise<IBoard | undefined> => {
   const { title, columns } = body;
   const index = BOARDS.findIndex((board) => board.id === id);
-  if (index < 0) {
-    return undefined;
-  }
-  let board = BOARDS[index];
-  if (board && board.id) {
-    board = { id: board.id, title, columns };
-    return board;
+  if (index !== -1) {
+    let board = BOARDS[index];
+    if (board && board.id) {
+      board = { ...board, title, columns };
+      BOARDS.splice(index, 1, board);
+      return board;
+    }
   }
   return undefined;
 };
