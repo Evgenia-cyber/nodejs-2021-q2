@@ -27,7 +27,7 @@ const getAll = () => getAllBoards();
 /**
  * Create new board
  * @param {BoardDataFromRequestBody} body - A board's data from request body
- * @returns {function(): Promise<Board|null>} - Returns a function that returns a Promise object that is a new board
+ * @returns {function(): Promise<Board>} - Returns a function that returns a Promise object that is a new board
  */
 const create = (body: IBoardDataFromRequestBody) => createBoard(body);
 

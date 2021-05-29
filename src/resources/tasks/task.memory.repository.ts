@@ -1,3 +1,7 @@
+import { TASKS } from '../data/data';
+import { Task } from './task.model';
+import { ITaskDataFromRequestBody } from './task.types';
+
 /**
  * @module taskRepository
  */
@@ -9,10 +13,10 @@
  * @property {number} task.order - The task's order.
  * @property {string} task.description - The task's description.
  * @property {string|null} task.userId - The task's user id.
+ * @property {string|null} task.columnId - The task's column id.
  */
 
-let { TASKS: tasks } = require('../data/data.js');
-const Task = require('./task.model.js');
+let tasks = TASKS;
 
 /**
  * Get all tasks
@@ -24,13 +28,10 @@ const getAll = async () => tasks;
  * Create new task
  * @param {string} boardId - The board's id - ID of the board this task belongs to
  * @param {TaskDataFromRequestBody} body - Information about the task
- * @returns {Promise<Task|null>} Promise object represents new task or null
+ * @returns {Promise<Task>} Promise object represents new task
  */
-const create = async (boardId, body) => {
+const create = async (boardId: string, body: ITaskDataFromRequestBody) => {
   const { title, order, description, userId, columnId } = body;
-  if (!title || !description) {
-    return null;
-  }
   const newTask = new Task({
     title,
     order,
@@ -49,7 +50,7 @@ const create = async (boardId, body) => {
  * @param {string} taskId - The task's id
  * @returns {Promise<Task|undefined>} Promise object represents task or undefined
  */
-const getById = async (boardId, taskId) =>
+const getById = async (boardId: string, taskId: string) =>
   tasks.find((task) => task.boardId === boardId && task.id === taskId);
 
 /**
@@ -57,29 +58,34 @@ const getById = async (boardId, taskId) =>
  * @param {string} boardId - The board's id - ID of the board this task belongs to
  * @param {string} taskId - The task's id
  * @param {TaskDataFromRequestBody} body - New information about the task
- * @returns {Promise<Task|null>} Promise object represents updated task or null
+ * @returns {Promise<Task|undefined>} Promise object represents updated task or undefined
  */
-const update = async (boardId, taskId, body) => {
+const update = async (
+  boardId: string,
+  taskId: string,
+  body: ITaskDataFromRequestBody
+) => {
   const { title, order, description, userId, columnId } = body;
-  if (!title || !description) {
-    return null;
-  }
   const index = tasks.findIndex(
     (task) => task.boardId === boardId && task.id === taskId
   );
   if (index < 0) {
-    return null;
+    return undefined;
   }
-  tasks[index] = {
-    id: tasks[index].id,
-    title,
-    order,
-    description,
-    userId,
-    boardId,
-    columnId,
-  };
-  return tasks[index];
+  let task = tasks[index];
+  if (task && task.id) {
+    task = {
+      id: task.id,
+      title,
+      order,
+      description,
+      userId,
+      boardId,
+      columnId,
+    };
+    return task;
+  }
+  return undefined;
 };
 
 /**
@@ -88,7 +94,7 @@ const update = async (boardId, taskId, body) => {
  * @param {string} taskId - The task's id
  * @returns {Promise<null|true>} Promise object represents null or true
  */
-const del = async (boardId, taskId) => {
+const del = async (boardId: string, taskId: string) => {
   const index = tasks.findIndex(
     (task) => task.boardId === boardId && task.id === taskId
   );
@@ -104,7 +110,7 @@ const del = async (boardId, taskId) => {
  * @param {string} boardId - The board's id - ID of the board this tasks belongs to
  * @returns {Promise<true>} Promise object represents true
  */
-const deleteTasksWhenBoardDeleted = async (boardId) => {
+const deleteTasksWhenBoardDeleted = async (boardId: string) => {
   tasks = tasks.filter((task) => task.boardId !== boardId);
   return true;
 };
@@ -114,7 +120,7 @@ const deleteTasksWhenBoardDeleted = async (boardId) => {
  * @param {string} userId - The user's id - ID of the user this tasks belongs to
  * @returns {Promise<true>} Promise object represents true
  */
-const updateTasksWhenUserDeleted = async (userId) => {
+const updateTasksWhenUserDeleted = async (userId: string) => {
   tasks = tasks.map((task) => {
     const copyTask = task;
     if (copyTask.userId === userId) {
@@ -125,7 +131,7 @@ const updateTasksWhenUserDeleted = async (userId) => {
   return true;
 };
 
-module.exports = {
+export {
   getAll,
   create,
   getById,

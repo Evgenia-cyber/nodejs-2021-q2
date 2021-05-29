@@ -1,10 +1,8 @@
 import express from 'express';
 import { User } from './user.model';
 import { usersService } from './user.service';
-// import {tasksService} from '../tasks/task.service';
+import { tasksService } from '../tasks/task.service';
 import { StatusCode, Messages } from '../../common/statusCodes';
-
-const tasksService = require('../tasks/task.service');
 
 const router = express.Router();
 

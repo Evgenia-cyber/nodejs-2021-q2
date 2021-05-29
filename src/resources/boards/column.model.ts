@@ -7,6 +7,7 @@ import { IColumnDataFromRequestBody } from './column.types';
  * @property {string} this.id - The column's id.
  * @property {string} this.title - The column's title.
  * @property {string} this.order - The column's order.
+ * 
  * @param {Object} column - Information about the column.
  * @param {string} column.title - The column's title. Default value: 'default title'
  * @param {number} column.order - The column's order. Default value: 0

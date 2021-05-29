@@ -1,5 +1,6 @@
 import { IUser } from '../users/user.types';
 import { IBoard } from '../boards/board.types';
+import { ITask } from '../tasks/task.types';
 
 /**
  * All database users
@@ -19,6 +20,6 @@ const BOARDS: IBoard[] = [];
  *
  * @type {Task[]}
  */
-const TASKS: any = [];
+const TASKS: ITask[] = [];
 
 export { USERS, BOARDS, TASKS };

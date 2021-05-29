@@ -1,8 +1,7 @@
 import express from 'express';
 import { boardsService } from './board.service';
+import { tasksService } from '../tasks/task.service';
 import { StatusCode, Messages } from '../../common/statusCodes';
-
-const tasksService = require('../tasks/task.service');
 
 const router = express.Router();
 
@@ -61,4 +60,4 @@ router.route('/:id').delete(async (req, res) => {
   }
 });
 
-module.exports = router;
+export { router };

@@ -20,6 +20,7 @@ import {
  * @property {string} this.name - The user's name.
  * @property {string} this.login - The user's login.
  * @property {string} this.password - The user's password.
+ * 
  * @param {UserDataFromRequestBody} user - Information about the user from request body
  * @this User
  */
