@@ -76,3 +76,15 @@ For more information, visit: https://code.visualstudio.com/docs/editor/debugging
 ```
 npm run doc
 ```
+
+## Compiling .ts files to .js
+
+```
+npm run build
+```
+
+## Running application for development
+
+```
+npm run dev
+```
