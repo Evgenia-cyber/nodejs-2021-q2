@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
-import { IBoardDataFromRequestBody } from './board.types';
-import { IColumn } from './column.types';
+import { IBoard, IBoardDataFromRequestBody } from './board.types';
+import { IColumn } from '../columns/column.types';
 
 /**
  * @class Board
@@ -15,7 +15,7 @@ import { IColumn } from './column.types';
  * @param {Array<Column>} board.columns - The board's columns. Default value: []
  * @this Board
  */
-class Board {
+class Board implements IBoard {
   id: string;
 
   title: string;

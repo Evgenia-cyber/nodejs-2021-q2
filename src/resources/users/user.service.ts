@@ -5,7 +5,7 @@ import {
   update as updateUser,
   del as delUser,
 } from './user.memory.repository';
-import { IUserDataFromRequestBody } from './user.types';
+import { IUser, IUserDataFromRequestBody } from './user.types';
 
 /**
  * @module userService
@@ -21,21 +21,22 @@ import { IUserDataFromRequestBody } from './user.types';
 
 /**
  * Get all users
- * @returns {function(): Promise<User[]>} - Returns a function that returns a Promise object that is an array of all users or an empty array
+ * @returns { Promise<User[]>} - Returns a Promise object that is an array of all users or an empty array
  */
-const getAll = () => getAllUsers();
+const getAll = (): Promise<IUser[] | []> => getAllUsers();
 
 /**
  * Create new user
  * @param {UserDataFromRequestBody} body - A user's data from request body
- * @returns {function(): Promise<User>} - Returns a function that returns a Promise object that is a new user
+ * @returns { Promise<User>} - Returns a Promise object that is a new user
  */
-const create = (body: IUserDataFromRequestBody) => createUser(body);
+const create = (body: IUserDataFromRequestBody): Promise<IUser> =>
+  createUser(body);
 
 /**
  * Get user by user's id
  * @param {string} id - The user's id
- * @returns {function(): Promise<User|undefined>} - Returns a function that returns a Promise object that is a user or undefined
+ * @returns {Promise<User|null>} - Returns a Promise object that is a user or null
  */
 const getById = (id: string) => getUserById(id);
 
@@ -43,7 +44,7 @@ const getById = (id: string) => getUserById(id);
  * Update user by user's id
  * @param {string} id - The user's id.
  * @param {UserDataFromRequestBody} body - New user's data from request body
- * @returns {function(): Promise<User|undefined>} - Returns a function that returns a Promise object that is a updated user or undefined
+ * @returns {Promise<User|null>} - Returns a Promise object that is a updated user or null
  */
 const update = (id: string, body: IUserDataFromRequestBody) =>
   updateUser(id, body);
@@ -51,7 +52,7 @@ const update = (id: string, body: IUserDataFromRequestBody) =>
 /**
  * Delete user by user's id
  * @param {string} id - The user's id.
- * @returns {function(): Promise<null|true>} Returns a function that returns a Promise object that is null or true
+ * @returns { Promise<null|true>} Returns a  Promise object that is null or true
  */
 const del = (id: string) => delUser(id);
 

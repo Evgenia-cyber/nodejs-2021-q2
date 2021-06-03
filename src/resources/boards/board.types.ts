@@ -1,4 +1,4 @@
-import { IColumn } from './column.types';
+import { IColumn } from '../columns/column.types';
 
 interface IBoardDataFromRequestBody {
   title: string;

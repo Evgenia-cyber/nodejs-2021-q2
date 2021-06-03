@@ -3,7 +3,10 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const {
-  PORT,
+  PORT
+} = process.env??4000;
+
+const {
   NODE_ENV,
   MONGO_CONNECTION_STRING,
   JWT_SECRET_KEY,

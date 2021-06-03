@@ -5,7 +5,7 @@ import {
   update as updateBoard,
   del as delBoard,
 } from './board.memory.repository';
-import { IBoardDataFromRequestBody } from './board.types';
+import { IBoard, IBoardDataFromRequestBody } from './board.types';
 
 /**
  * @module boardService
@@ -20,38 +20,41 @@ import { IBoardDataFromRequestBody } from './board.types';
 
 /**
  * Get all boards
- * @returns {function(): Promise<Board[]>} - Returns a function that returns a Promise object that is an array of all boards or an empty array
+ * @returns { Promise<Board[]>} - Returns a Promise object that is an array of all boards or an empty array
  */
-const getAll = () => getAllBoards();
+const getAll = (): Promise<IBoard[] | []> => getAllBoards();
 
 /**
  * Create new board
  * @param {BoardDataFromRequestBody} body - A board's data from request body
- * @returns {function(): Promise<Board>} - Returns a function that returns a Promise object that is a new board
+ * @returns { Promise<Board>} - Returns a Promise object that is a new board
  */
-const create = (body: IBoardDataFromRequestBody) => createBoard(body);
+const create = (body: IBoardDataFromRequestBody): Promise<IBoard> =>
+  createBoard(body);
 
 /**
  * Get board by board's id
  * @param {string} id - The board's id
- * @returns {function(): Promise<Board|undefined>} - Returns a function that returns a Promise object that is a board or undefined
+ * @returns { Promise<Board|null>} - Returns a Promise object that is a board or null
  */
-const getById = (id: string) => getBoardById(id);
+const getById = (id: string): Promise<IBoard | null> => getBoardById(id);
 
 /**
  * Update board by board's id
  * @param {string} id - The board's id.
  * @param {BoardDataFromRequestBody} body - New board's data from request body
- * @returns {function(): Promise<Board|undefined>} - Returns a function that returns a Promise object that is a updated board or undefined
+ * @returns { Promise<Board|null>} - Returns a Promise object that is a updated board or null
  */
-const update = (id: string, body: IBoardDataFromRequestBody) =>
-  updateBoard(id, body);
+const update = (
+  id: string,
+  body: IBoardDataFromRequestBody
+): Promise<IBoard | null> => updateBoard(id, body);
 
 /**
  * Delete board by board's id
  * @param {string} id - The board's id.
- * @returns {function(): Promise<null|true>} Returns a function that returns a Promise object that is null or true
+ * @returns { Promise<null|true>} Returns a Promise object that is null or true
  */
-const del = (id: string) => delBoard(id);
+const del = (id: string): Promise<null | true> => delBoard(id);
 
 export const boardsService = { getAll, getById, create, update, del };

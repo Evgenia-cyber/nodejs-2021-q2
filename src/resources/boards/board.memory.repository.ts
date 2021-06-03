@@ -1,6 +1,6 @@
 import { BOARDS } from '../data/data';
 import { Board } from './board.model';
-import { Column } from './column.model';
+import { Column } from '../columns/column.model';
 import { IBoard, IBoardDataFromRequestBody } from './board.types';
 
 /**
@@ -38,32 +38,35 @@ const create = async (body: IBoardDataFromRequestBody): Promise<IBoard> => {
 /**
  * Get board by board's id
  * @param {string} id - The board's id.
- * @returns {Promise<Board|undefined>} Promise object represents board or undefined
+ * @returns {Promise<Board|null>} Promise object represents board or null
  */
-const getById = async (id: string): Promise<IBoard | undefined> =>
-  BOARDS.find((board) => board.id === id);
+const getById = async (id: string): Promise<IBoard | null> => {
+  const boardById = BOARDS.find((board) => board.id === id);
+  if (!boardById) return null;
+  return boardById;
+};
 
 /**
  * Update board by board's id
  * @param {string} id - The board's id.
  * @param {BoardDataFromRequestBody} body - New information about the board
- * @returns {Promise<Board|undefined>} Promise object represents updated board or undefined
+ * @returns {Promise<Board|null>} Promise object represents updated board or null
  */
 const update = async (
   id: string,
   body: IBoardDataFromRequestBody
-): Promise<IBoard | undefined> => {
+): Promise<IBoard | null> => {
   const { title, columns } = body;
   const index = BOARDS.findIndex((board) => board.id === id);
   if (index !== -1) {
-    let board = BOARDS[index];
-    if (board && board.id) {
-      board = { ...board, title, columns };
-      BOARDS.splice(index, 1, board);
-      return board;
+    let updatedBoard = BOARDS[index];
+    if (updatedBoard && updatedBoard.id) {
+      updatedBoard = { ...updatedBoard, title, columns };
+      BOARDS[index] = updatedBoard;
+      return updatedBoard;
     }
   }
-  return undefined;
+  return null;
 };
 
 /**

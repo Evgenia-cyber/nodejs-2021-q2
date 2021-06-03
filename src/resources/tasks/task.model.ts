@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { ITaskDataFromRequest } from './task.types';
+import { ITask, ITaskDataFromRequest } from './task.types';
 
 /**
  * @class Task
@@ -20,7 +20,7 @@ import { ITaskDataFromRequest } from './task.types';
  * @param {string|null} task.columnId - The task's column id. Default value: null
  * @this Task
  */
-class Task {
+class Task implements ITask {
   id: string;
 
   title: string;

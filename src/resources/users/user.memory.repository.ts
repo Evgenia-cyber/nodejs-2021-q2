@@ -38,33 +38,36 @@ const create = async (body: IUserDataFromRequestBody): Promise<IUser> => {
  * Get user by user's id
  *
  * @param {string} id - The user's id.
- * @returns {Promise<User|undefined>} Promise object represents user or undefined
+ * @returns {Promise<User|null>} Promise object represents user or null
  */
-const getById = async (id: string): Promise<IUser | undefined> =>
-  USERS.find((user) => user.id === id);
+const getById = async (id: string): Promise<IUser | null> => {
+  const userById = USERS.find((user) => user.id === id);
+  if (!userById) return null;
+  return userById;
+};
 
 /**
  * Update user by user's id
  *
  * @param {string} id - The user's id.
  * @param {UserDataFromRequestBody} body - New information about the user
- * @returns {Promise<User|undefined>} Promise object represents updated user or undefined
+ * @returns {Promise<User|null>} Promise object represents updated user or null
  */
 const update = async (
   id: string,
   body: IUserDataFromRequestBody
-): Promise<IUser | undefined> => {
+): Promise<IUser | null> => {
   const { name, login, password } = body;
   const index = USERS.findIndex((user) => user.id === id);
   if (index !== -1) {
-    let user = USERS[index];
-    if (user && user.id) {
-      user = { ...user, name, login, password };
-      USERS.splice(index, 1, user);
-      return user;
+    let updatedUser = USERS[index];
+    if (updatedUser && updatedUser.id) {
+      updatedUser = { ...updatedUser, name, login, password };
+      USERS[index] = updatedUser;
+      return updatedUser;
     }
   }
-  return undefined;
+  return null;
 };
 
 /**

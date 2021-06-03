@@ -10,9 +10,9 @@
   "main": "build/server.js",
   "scripts": {
     "build": "tsc",
-    "dev": "nodemon",
-    "start": "ts-node src/server.ts",
-    "doc": "./node_modules/.bin/jsdoc -c jsdoc.json",
+    "dev": "cross-env nodemon",
+    "start": "cross-env ts-node src/server.ts",
+    "doc": "cross-env ./node_modules/.bin/jsdoc -c jsdoc.json",
     "lint": "eslint --ext .js,.ts --fix src/",
     "test": "cross-env DEBUG=rs:* jest --testMatch \"<rootDir>/test/e2e/test/*.test.js\" --noStackTrace --runInBand",
     "test:auth": "cross-env DEBUG=rs:* TEST_MODE=auth jest --noStackTrace"

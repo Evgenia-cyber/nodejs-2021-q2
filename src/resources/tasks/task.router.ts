@@ -1,4 +1,4 @@
-import express, { Request } from 'express';
+import express, { Request, Response } from 'express';
 import { tasksService } from './task.service';
 import { StatusCode, Messages } from '../../common/statusCodes';
 
@@ -9,7 +9,7 @@ interface IRequestParams {
 
 const router = express.Router({ mergeParams: true });
 
-router.route('/').get(async (_req, res) => {
+router.route('/').get(async (_req: Request, res: Response) => {
   const tasks = await tasksService.getAll();
   await res.status(StatusCode.OK).json(tasks);
 });

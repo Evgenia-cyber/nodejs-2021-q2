@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import { User } from './user.model';
 import { usersService } from './user.service';
 import { tasksService } from '../tasks/task.service';
@@ -6,11 +6,13 @@ import { StatusCode, Messages } from '../../common/statusCodes';
 
 const router = express.Router();
 
-router.route('/').get(async (_req, res) => {
+/** get all users */
+router.route('/').get(async (_req: Request, res: Response) => {
   const users = await usersService.getAll();
   await res.status(StatusCode.OK).json(users.map(User.toResponse));
 });
 
+/** create user */
 router.route('/').post(async (req, res) => {
   const { body } = req;
   const { name, login, password } = body;
@@ -23,6 +25,7 @@ router.route('/').post(async (req, res) => {
   await res.status(StatusCode.CREATED).json(User.toResponse(newUser));
 });
 
+/** get user by id */
 router.route('/:id').get(async (req, res) => {
   const { id } = req.params;
   const user = await usersService.getById(id);
@@ -33,6 +36,7 @@ router.route('/:id').get(async (req, res) => {
   }
 });
 
+/** update user */
 router.route('/:id').put(async (req, res) => {
   const { id } = req.params;
   const { body } = req;
@@ -50,6 +54,7 @@ router.route('/:id').put(async (req, res) => {
   }
 });
 
+/** delete user */
 router.route('/:id').delete(async (req, res) => {
   const { id } = req.params;
   const isTasksUpdated = await tasksService.updateTasksWhenUserDeleted(id);
