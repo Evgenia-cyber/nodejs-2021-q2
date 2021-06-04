@@ -21,9 +21,9 @@ class CustomError extends Error implements IError {
 
 const catchAndLogErrors = async (
   err: CustomError,
-  _req: any,
-  res: any,
-  next: any
+  _req: Request,
+  res: Response,
+  next: NextFunction
 ) => {
   const errorStatus = err.status
     ? err.status
@@ -38,9 +38,13 @@ const catchAndLogErrors = async (
   next();
 };
 
-const wrapper = (func: any) => async (req: Request, res: Response, next: NextFunction) => {
+const wrapper = (func: any) => async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
-    await func(req, res);
+    await func(req, res, next);
   } catch (err) {
     next(err);
   }
