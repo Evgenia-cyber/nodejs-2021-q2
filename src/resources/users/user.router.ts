@@ -7,10 +7,9 @@ import { StatusCode, Messages } from '../../types/statusCodes';
 const router = express.Router();
 
 /** get all users */
-router.route('/').get(async (_req: Request, res: Response, next: any) => {
+router.route('/').get(async (_req: Request, res: Response) => {
   const users = await usersService.getAll();
   await res.status(StatusCode.OK).json(users.map(User.toResponse));
-  next();
 });
 
 /** create user */

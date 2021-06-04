@@ -19,10 +19,10 @@ const logger = createLogger({
   ],
 });
 
-const loggerInfo = (req: Request, res: Response) => {
+const logInfo = (req: Request, res: Response) => {
   const { method, url, params, query, body } = req;
-  const { statusCode } = res;
-  logger.info(JSON.stringify({ method, url, params, query, statusCode, body }));
+  const { status } = res;
+  logger.info(JSON.stringify({ method, url, params, query, status, body }));
 };
 
-export { logger, loggerInfo };
+export { logger, logInfo };
