@@ -1,34 +1,41 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import { boardsService } from './board.service';
 import { tasksService } from '../tasks/task.service';
 import { StatusCode, Messages } from '../../types/statusCodes';
+import { CustomError, wrapper } from '../../middlewares';
 
 const router = express.Router();
 
-router.route('/').get(async (_req, res) => {
-  const boards = await boardsService.getAll();
-  await res.status(StatusCode.OK).json(boards);
-});
+router.route('/').get(
+  wrapper(async (_req: Request, res: Response) => {
+    const boards = await boardsService.getAll();
+    await res.status(StatusCode.OK).json(boards);
+  })
+);
 
-router.route('/').post(async (req, res) => {
-  const { body } = req;
-  const { title, columns } = body;
-  if (!title || !columns) {
-    await res
-      .status(StatusCode.BAD_REQUEST)
-      .json({ error: Messages.BAD_REQUEST });
-  }
-  const newBoard = await boardsService.create(body);
-  await res.status(StatusCode.CREATED).json(newBoard);
-});
+router.route('/').post(
+  wrapper(async (req: Request, res: Response) => {
+    const { body } = req;
+    const { title, columns } = body;
+    if (!title || !columns) {
+      throw new CustomError(StatusCode.BAD_REQUEST, Messages.BAD_REQUEST);
+    }
+    const newBoard = await boardsService.create(body);
+    await res.status(StatusCode.CREATED).json(newBoard);
+  })
+);
 
+// router.route('/:boardId').get(async (req: Request, res: Response) => {
 router.route('/:boardId').get(async (req, res) => {
   const { boardId } = req.params;
   const board = await boardsService.getById(boardId);
   if (board) {
     await res.status(StatusCode.OK).json(board);
   } else {
-    await res.status(StatusCode.NOT_FOUND).json({ error: Messages.NOT_FOUND });
+    throw new CustomError(
+      StatusCode.NOT_FOUND,
+      `Board with id ${boardId} ${Messages.NOT_FOUND}`
+    );
   }
 });
 

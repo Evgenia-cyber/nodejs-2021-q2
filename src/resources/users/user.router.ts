@@ -4,6 +4,7 @@ import { User } from './user.model';
 import { usersService } from './user.service';
 import { tasksService } from '../tasks/task.service';
 import { StatusCode, Messages } from '../../types/statusCodes';
+import { IRequestParamsUser } from './user.types';
 
 const router = express.Router();
 
@@ -30,7 +31,7 @@ router.route('/').post(
 
 /** get user by id */
 router.route('/:userId').get(
-  wrapper(async (req: Request, res: Response) => {
+  wrapper(async (req: Request<IRequestParamsUser>, res: Response) => {
     const { userId } = req.params;
     const user = await usersService.getById(userId);
     if (user) {
@@ -46,7 +47,7 @@ router.route('/:userId').get(
 
 /** update user */
 router.route('/:userId').put(
-  wrapper(async (req: Request, res: Response) => {
+  wrapper(async (req: Request<IRequestParamsUser>, res: Response) => {
     const { userId } = req.params;
     const { body } = req;
     const { name, login, password } = body;
@@ -67,7 +68,7 @@ router.route('/:userId').put(
 
 /** delete user */
 router.route('/:userId').delete(
-  wrapper(async (req: Request, res: Response) => {
+  wrapper(async (req: Request<IRequestParamsUser>, res: Response) => {
     const { userId } = req.params;
     const isTasksUpdated = await tasksService.updateTasksWhenUserDeleted(
       userId
