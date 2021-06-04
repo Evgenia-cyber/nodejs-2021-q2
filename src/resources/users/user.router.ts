@@ -2,14 +2,15 @@ import express, { Request, Response } from 'express';
 import { User } from './user.model';
 import { usersService } from './user.service';
 import { tasksService } from '../tasks/task.service';
-import { StatusCode, Messages } from '../../common/statusCodes';
+import { StatusCode, Messages } from '../../types/statusCodes';
 
 const router = express.Router();
 
 /** get all users */
-router.route('/').get(async (_req: Request, res: Response) => {
+router.route('/').get(async (_req: Request, res: Response, next: any) => {
   const users = await usersService.getAll();
   await res.status(StatusCode.OK).json(users.map(User.toResponse));
+  next();
 });
 
 /** create user */
@@ -26,9 +27,9 @@ router.route('/').post(async (req, res) => {
 });
 
 /** get user by id */
-router.route('/:id').get(async (req, res) => {
-  const { id } = req.params;
-  const user = await usersService.getById(id);
+router.route('/:userId').get(async (req, res) => {
+  const { userId } = req.params;
+  const user = await usersService.getById(userId);
   if (user) {
     await res.status(StatusCode.OK).json(User.toResponse(user));
   } else {
@@ -37,8 +38,8 @@ router.route('/:id').get(async (req, res) => {
 });
 
 /** update user */
-router.route('/:id').put(async (req, res) => {
-  const { id } = req.params;
+router.route('/:userId').put(async (req, res) => {
+  const { userId } = req.params;
   const { body } = req;
   const { name, login, password } = body;
   if (!name || !login || !password) {
@@ -46,7 +47,7 @@ router.route('/:id').put(async (req, res) => {
       .status(StatusCode.BAD_REQUEST)
       .json({ error: Messages.BAD_REQUEST });
   }
-  const user = await usersService.update(id, body);
+  const user = await usersService.update(userId, body);
   if (user) {
     await res.status(StatusCode.OK).json(User.toResponse(user));
   } else {
@@ -55,10 +56,10 @@ router.route('/:id').put(async (req, res) => {
 });
 
 /** delete user */
-router.route('/:id').delete(async (req, res) => {
-  const { id } = req.params;
-  const isTasksUpdated = await tasksService.updateTasksWhenUserDeleted(id);
-  const isUserDeleted = await usersService.del(id);
+router.route('/:userId').delete(async (req, res) => {
+  const { userId } = req.params;
+  const isTasksUpdated = await tasksService.updateTasksWhenUserDeleted(userId);
+  const isUserDeleted = await usersService.del(userId);
   if (isTasksUpdated && isUserDeleted) {
     await res.status(StatusCode.DELETED).json();
   } else {

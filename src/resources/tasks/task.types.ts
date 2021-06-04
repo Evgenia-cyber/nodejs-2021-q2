@@ -1,3 +1,8 @@
+interface IRequestParamsTask {
+  boardId: string;
+  taskId: string;
+}
+
 interface ITaskDataFromRequestBody {
   title: string;
   order: number;
@@ -5,11 +10,18 @@ interface ITaskDataFromRequestBody {
   userId: string | null;
   columnId: string | null;
 }
+
 interface ITaskDataFromRequest extends ITaskDataFromRequestBody {
   boardId: string | null;
 }
+
 interface ITask extends ITaskDataFromRequest {
   id: string;
 }
 
-export { ITask, ITaskDataFromRequest, ITaskDataFromRequestBody };
+export {
+  IRequestParamsTask,
+  ITask,
+  ITaskDataFromRequest,
+  ITaskDataFromRequestBody,
+};

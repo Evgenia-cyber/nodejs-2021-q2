@@ -1,7 +1,7 @@
 import express from 'express';
 import { boardsService } from './board.service';
 import { tasksService } from '../tasks/task.service';
-import { StatusCode, Messages } from '../../common/statusCodes';
+import { StatusCode, Messages } from '../../types/statusCodes';
 
 const router = express.Router();
 
@@ -22,9 +22,9 @@ router.route('/').post(async (req, res) => {
   await res.status(StatusCode.CREATED).json(newBoard);
 });
 
-router.route('/:id').get(async (req, res) => {
-  const { id } = req.params;
-  const board = await boardsService.getById(id);
+router.route('/:boardId').get(async (req, res) => {
+  const { boardId } = req.params;
+  const board = await boardsService.getById(boardId);
   if (board) {
     await res.status(StatusCode.OK).json(board);
   } else {
@@ -32,8 +32,8 @@ router.route('/:id').get(async (req, res) => {
   }
 });
 
-router.route('/:id').put(async (req, res) => {
-  const { id } = req.params;
+router.route('/:boardId').put(async (req, res) => {
+  const { boardId } = req.params;
   const { body } = req;
   const { title, columns } = body;
   if (!title || !columns) {
@@ -41,7 +41,7 @@ router.route('/:id').put(async (req, res) => {
       .status(StatusCode.BAD_REQUEST)
       .json({ error: Messages.BAD_REQUEST });
   }
-  const board = await boardsService.update(id, body);
+  const board = await boardsService.update(boardId, body);
   if (board) {
     await res.status(StatusCode.OK).json(board);
   } else {
@@ -49,10 +49,12 @@ router.route('/:id').put(async (req, res) => {
   }
 });
 
-router.route('/:id').delete(async (req, res) => {
-  const { id } = req.params;
-  const isTasksDeleted = await tasksService.deleteTasksWhenBoardDeleted(id);
-  const isBoardDeleted = await boardsService.del(id);
+router.route('/:boardId').delete(async (req, res) => {
+  const { boardId } = req.params;
+  const isTasksDeleted = await tasksService.deleteTasksWhenBoardDeleted(
+    boardId
+  );
+  const isBoardDeleted = await boardsService.del(boardId);
   if (isTasksDeleted && isBoardDeleted) {
     await res.status(StatusCode.DELETED).json();
   } else {
