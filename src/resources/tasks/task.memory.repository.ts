@@ -128,10 +128,12 @@ const deleteTasksWhenBoardDeleted = async (boardId: string): Promise<true> => {
 
 /**
  * Update tasks by user's id - when this user deleted, all his tasks would be updated to put userId = null
- * @param {string} userId - The user's id - ID of the user this tasks belongs to
+ * @param {string|undefined} userId - The user's id - ID of the user this tasks belongs to
  * @returns {Promise<true>} Promise object represents true
  */
-const updateTasksWhenUserDeleted = async (userId: string): Promise<true> => {
+const updateTasksWhenUserDeleted = async (
+  userId: string | undefined
+): Promise<true> => {
   tasks = tasks.map((task) => {
     const copyTask = task;
     if (copyTask.userId === userId) {

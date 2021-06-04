@@ -9,6 +9,6 @@ export enum StatusCode {
 
 export enum Messages {
   BAD_REQUEST = 'Bad request',
-  NOT_FOUND = 'Not found',
+  NOT_FOUND = 'not found',
   INTERNAL_SERVER_ERROR = 'Internal server error',
 }

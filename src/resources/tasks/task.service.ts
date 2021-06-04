@@ -80,11 +80,12 @@ const deleteTasksWhenBoardDeleted = (boardId: string): Promise<true> =>
 
 /**
  * Update tasks by user's id - when this user deleted, all his tasks would be updated to put userId = null
- * @param {string} userId - The user's id - ID of the user this tasks belongs to
+ * @param {string|undefined} userId - The user's id - ID of the user this tasks belongs to
  * @returns {Promise<true>} Returns a Promise object that is true
  */
-const updateTasksWhenUserDeleted = (taskId: string): Promise<true> =>
-  updateTasks(taskId);
+const updateTasksWhenUserDeleted = (
+  taskId: string | undefined
+): Promise<true> => updateTasks(taskId);
 
 export const tasksService = {
   getAll,

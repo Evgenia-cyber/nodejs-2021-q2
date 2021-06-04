@@ -35,25 +35,25 @@ const create = (body: IUserDataFromRequestBody): Promise<IUser> =>
 
 /**
  * Get user by user's id
- * @param {string} id - The user's id
+ * @param {string | undefined} id - The user's id
  * @returns {Promise<User|null>} - Returns a Promise object that is a user or null
  */
-const getById = (id: string) => getUserById(id);
+const getById = (id: string | undefined) => getUserById(id);
 
 /**
  * Update user by user's id
- * @param {string} id - The user's id.
+ * @param {string|undefined} id - The user's id.
  * @param {UserDataFromRequestBody} body - New user's data from request body
  * @returns {Promise<User|null>} - Returns a Promise object that is a updated user or null
  */
-const update = (id: string, body: IUserDataFromRequestBody) =>
+const update = (id: string | undefined, body: IUserDataFromRequestBody) =>
   updateUser(id, body);
 
 /**
  * Delete user by user's id
- * @param {string} id - The user's id.
+ * @param {string|undefined} id - The user's id.
  * @returns { Promise<null|true>} Returns a  Promise object that is null or true
  */
-const del = (id: string) => delUser(id);
+const del = (id: string | undefined) => delUser(id);
 
 export const usersService = { getAll, getById, create, update, del };

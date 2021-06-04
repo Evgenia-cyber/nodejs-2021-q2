@@ -1,7 +1,29 @@
 import { logger } from './logging';
 import { StatusCode, Messages } from '../types/statusCodes';
 
-const catchAndLogErrors = async (err: any, _req: any, res: any, next: any) => {
+interface IError {
+  status: number;
+  error: string;
+}
+
+class CustomError extends Error implements IError {
+  status: number;
+
+  error: string;
+
+  constructor(statusCode: number, errorMessage: string) {
+    super();
+    this.status = statusCode;
+    this.error = errorMessage;
+  }
+}
+
+const catchAndLogErrors = async (
+  err: CustomError,
+  _req: any,
+  res: any,
+  next: any
+) => {
   const errorStatus = err.status
     ? err.status
     : StatusCode.INTERNAL_SERVER_ERROR;
@@ -23,4 +45,4 @@ const wrapper = (func: any) => async (req: any, res: any, next: any) => {
   }
 };
 
-export { catchAndLogErrors, wrapper };
+export { catchAndLogErrors, wrapper, CustomError };
