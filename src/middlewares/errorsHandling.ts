@@ -1,3 +1,4 @@
+// import { NextFunction, Request, RequestHandler, Response } from 'express';
 import { NextFunction, Request, Response } from 'express';
 import { logger } from './logging';
 import { StatusCode, Messages } from '../types/statusCodes';
@@ -45,6 +46,7 @@ const wrapper = (func: any) => async (
 ) => {
   try {
     await func(req, res, next);
+    next();
   } catch (err) {
     next(err);
   }

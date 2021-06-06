@@ -27,8 +27,10 @@ app.use('/users', userRouter);
 app.use('/boards', boardRouter);
 boardRouter.use('/:boardId/tasks', taskRouter);
 
+app.use(logInfo);
+
 app.use(catchAndLogErrors);
 
-app.use(logInfo);
+// app.use(logInfo);
 
 export default app;
