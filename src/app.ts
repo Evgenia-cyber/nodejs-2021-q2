@@ -41,6 +41,6 @@ process.on('unhandledRejection', (reason, promise) => {
   logError(`Unhandled Rejection at: ${promise}, reason: ${reason}`);
 });
 
-Promise.reject(Error('Oops!'));
+// Promise.reject(Error('Oops!'));
 
 export default app;

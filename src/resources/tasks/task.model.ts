@@ -29,11 +29,11 @@ class Task implements ITask {
 
   description: string;
 
-  userId: string | null;
+  userId: string | null | undefined;
 
-  boardId: string | null;
+  boardId: string | null | undefined;
 
-  columnId: string | null;
+  columnId: string | null | undefined;
 
   constructor({
     title = 'default title',

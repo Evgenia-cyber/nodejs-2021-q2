@@ -1,7 +1,3 @@
-interface IRequestParamsUser {
-  userId: string;
-}
-
 interface IUserDataFromRequestBody {
   name: string;
   login: string;
@@ -19,7 +15,6 @@ interface IUserForResponse {
 }
 
 export {
-  IRequestParamsUser,
   IUserForResponse,
   IUser,
   IUserDataFromRequestBody,

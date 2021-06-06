@@ -35,56 +35,61 @@ const getAll = (): Promise<ITask[] | []> => getAllTasks();
  * @returns { Promise<Taks>} - Returns a Promise object that is a new task
  */
 const create = (
-  boardId: string,
+  boardId: string | undefined,
   body: ITaskDataFromRequestBody
 ): Promise<ITask> => createTask(boardId, body);
 
 /**
  *  Get task by board's and task's ids
- * @param {string} boardId - The board's id - ID of the board this task belongs to
- * @param {string} taskId - The task's id
+ * @param {string|undefined} boardId - The board's id - ID of the board this task belongs to
+ * @param {string|undefined} taskId - The task's id
  * @returns { Promise<Task|null>} - Returns a Promise object that is a task or null
  */
-const getById = (boardId: string, taskId: string): Promise<ITask | null> =>
-  getTaskById(boardId, taskId);
+const getById = (
+  boardId: string | undefined,
+  taskId: string | undefined
+): Promise<ITask | null> => getTaskById(boardId, taskId);
 
 /**
  * Update task by board's and task's ids
- * @param {string} boardId - The board's id - ID of the board this task belongs to
- * @param {string} taskId - The task's id
+ * @param {string|undefined} boardId - The board's id - ID of the board this task belongs to
+ * @param {string|undefined} taskId - The task's id
  * @param {TaskDataFromRequestBody} body - New task's data from request body
  * @returns { Promise<Task|undefined>} - Returns a Promise object that is a updated task or undefined
  */
 const update = (
-  boardId: string,
-  taskId: string,
+  boardId: string | undefined,
+  taskId: string | undefined,
   body: ITaskDataFromRequestBody
 ): Promise<ITask | null> => updateTask(boardId, taskId, body);
 
 /**
  * Delete task by board's and task's ids
- * @param {string} boardId - The board's id - ID of the board this task belongs to
- * @param {string} taskId - The task's id
+ * @param {string|undefined} boardId - The board's id - ID of the board this task belongs to
+ * @param {string|undefined} taskId - The task's id
  * @returns { Promise<null|true>} Returns a Promise object that is null or true
  */
-const del = (boardId: string, taskId: string): Promise<null | true> =>
-  delTask(boardId, taskId);
+const del = (
+  boardId: string | undefined,
+  taskId: string | undefined
+): Promise<null | true> => delTask(boardId, taskId);
 
 /**
  * Delete tasks by board's id, when this board deleted
- * @param {string} boardId - The board's id - ID of the board this tasks belongs to
+ * @param {string|undefined} boardId - The board's id - ID of the board this tasks belongs to
  * @returns {Promise<true>} Returns a Promise object that is true
  */
-const deleteTasksWhenBoardDeleted = (boardId: string): Promise<true> =>
-  deleteTasks(boardId);
+const deleteTasksWhenBoardDeleted = (
+  boardId: string | undefined
+): Promise<true> => deleteTasks(boardId);
 
 /**
  * Update tasks by user's id - when this user deleted, all his tasks would be updated to put userId = null
- * @param {string} userId - The user's id - ID of the user this tasks belongs to
+ * @param {string|undefined} userId - The user's id - ID of the user this tasks belongs to
  * @returns {Promise<true>} Returns a Promise object that is true
  */
 const updateTasksWhenUserDeleted = (
-  taskId: string
+  taskId: string | undefined
 ): Promise<true> => updateTasks(taskId);
 
 export const tasksService = {

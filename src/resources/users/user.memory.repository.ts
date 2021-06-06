@@ -37,10 +37,10 @@ const create = async (body: IUserDataFromRequestBody): Promise<IUser> => {
 /**
  * Get user by user's id
  *
- * @param {string} id - The user's id.
+ * @param {string|undefined} id - The user's id.
  * @returns {Promise<User|null>} Promise object represents user or null
  */
-const getById = async (id: string): Promise<IUser | null> => {
+const getById = async (id: string|undefined): Promise<IUser | null> => {
   const userById = USERS.find((user) => user.id === id);
   if (!userById) return null;
   return userById;
@@ -49,12 +49,12 @@ const getById = async (id: string): Promise<IUser | null> => {
 /**
  * Update user by user's id
  *
- * @param {string} id - The user's id.
+ * @param {string|undefined} id - The user's id.
  * @param {UserDataFromRequestBody} body - New information about the user
  * @returns {Promise<User|null>} Promise object represents updated user or null
  */
 const update = async (
-  id: string ,
+  id: string|undefined ,
   body: IUserDataFromRequestBody
 ): Promise<IUser | null> => {
   const { name, login, password } = body;
@@ -73,10 +73,10 @@ const update = async (
 /**
  * Delete user by user's id
  *
- * @param {string} id - The user's id.
+ * @param {string|undefined} id - The user's id.
  * @returns {Promise<null|true>} Promise object represents null or true
  */
-const del = async (id: string ): Promise<null | true> => {
+const del = async (id: string|undefined ): Promise<null | true> => {
   const index = USERS.findIndex((user) => user.id === id);
   if (index < 0) {
     return null;

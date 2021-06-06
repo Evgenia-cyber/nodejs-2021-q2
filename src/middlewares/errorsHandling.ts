@@ -1,5 +1,4 @@
-// import { NextFunction, Request, RequestHandler, Response } from 'express';
-import { NextFunction, Request, Response } from 'express';
+import { NextFunction, Request, RequestHandler, Response } from 'express';
 import { logger } from './logging';
 import { StatusCode, Messages } from '../types/statusCodes';
 
@@ -39,7 +38,7 @@ const catchAndLogErrors = async (
   next();
 };
 
-const wrapper = (func: any) => async (
+const wrapper = (func: RequestHandler) => async (
   req: Request,
   res: Response,
   next: NextFunction

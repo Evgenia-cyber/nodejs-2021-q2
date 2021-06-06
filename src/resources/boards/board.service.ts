@@ -34,27 +34,28 @@ const create = (body: IBoardDataFromRequestBody): Promise<IBoard> =>
 
 /**
  * Get board by board's id
- * @param {string} id - The board's id
+ * @param {string|undefined} id - The board's id
  * @returns { Promise<Board|null>} - Returns a Promise object that is a board or null
  */
-const getById = (id: string): Promise<IBoard | null> => getBoardById(id);
+const getById = (id: string | undefined): Promise<IBoard | null> =>
+  getBoardById(id);
 
 /**
  * Update board by board's id
- * @param {string} id - The board's id.
+ * @param {string|undefined} id - The board's id.
  * @param {BoardDataFromRequestBody} body - New board's data from request body
  * @returns { Promise<Board|null>} - Returns a Promise object that is a updated board or null
  */
 const update = (
-  id: string,
+  id: string | undefined,
   body: IBoardDataFromRequestBody
 ): Promise<IBoard | null> => updateBoard(id, body);
 
 /**
  * Delete board by board's id
- * @param {string} id - The board's id.
+ * @param {string|undefined} id - The board's id.
  * @returns { Promise<null|true>} Returns a Promise object that is null or true
  */
-const del = (id: string): Promise<null | true> => delBoard(id);
+const del = (id: string | undefined): Promise<null | true> => delBoard(id);
 
 export const boardsService = { getAll, getById, create, update, del };

@@ -3,7 +3,6 @@ import { boardsService } from './board.service';
 import { tasksService } from '../tasks/task.service';
 import { StatusCode, Messages } from '../../types/statusCodes';
 import { CustomError, wrapper } from '../../middlewares';
-import { IRequestParamsBoard } from './board.types';
 
 const router = express.Router();
 
@@ -27,7 +26,7 @@ router.route('/').post(
 );
 
 router.route('/:boardId').get(
-  wrapper(async (req: Request<IRequestParamsBoard>, res: Response) => {
+  wrapper(async (req: Request, res: Response) => {
     const { boardId } = req.params;
     const board = await boardsService.getById(boardId);
     if (board) {
@@ -42,7 +41,7 @@ router.route('/:boardId').get(
 );
 
 router.route('/:boardId').put(
-  wrapper(async (req: Request<IRequestParamsBoard>, res: Response) => {
+  wrapper(async (req: Request, res: Response) => {
     const { boardId } = req.params;
     const { body } = req;
     const { title, columns } = body;
@@ -62,7 +61,7 @@ router.route('/:boardId').put(
 );
 
 router.route('/:boardId').delete(
-  wrapper(async (req: Request<IRequestParamsBoard>, res: Response) => {
+  wrapper(async (req: Request, res: Response) => {
     const { boardId } = req.params;
     const isTasksDeleted = await tasksService.deleteTasksWhenBoardDeleted(
       boardId

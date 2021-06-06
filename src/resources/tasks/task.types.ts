@@ -1,27 +1,17 @@
-interface IRequestParamsTask {
-  boardId: string;
-  taskId: string;
-}
-
 interface ITaskDataFromRequestBody {
   title: string;
   order: number;
   description: string;
-  userId: string | null;
-  columnId: string | null;
+  userId: string | null | undefined;
+  columnId: string | null | undefined;
 }
 
 interface ITaskDataFromRequest extends ITaskDataFromRequestBody {
-  boardId: string | null;
+  boardId: string | null | undefined;
 }
 
 interface ITask extends ITaskDataFromRequest {
   id: string;
 }
 
-export {
-  IRequestParamsTask,
-  ITask,
-  ITaskDataFromRequest,
-  ITaskDataFromRequestBody,
-};
+export { ITask, ITaskDataFromRequest, ITaskDataFromRequestBody };

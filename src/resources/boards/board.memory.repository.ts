@@ -37,10 +37,10 @@ const create = async (body: IBoardDataFromRequestBody): Promise<IBoard> => {
 
 /**
  * Get board by board's id
- * @param {string} id - The board's id.
+ * @param {string|undefined} id - The board's id.
  * @returns {Promise<Board|null>} Promise object represents board or null
  */
-const getById = async (id: string): Promise<IBoard | null> => {
+const getById = async (id: string | undefined): Promise<IBoard | null> => {
   const boardById = BOARDS.find((board) => board.id === id);
   if (!boardById) return null;
   return boardById;
@@ -48,12 +48,12 @@ const getById = async (id: string): Promise<IBoard | null> => {
 
 /**
  * Update board by board's id
- * @param {string} id - The board's id.
+ * @param {string|undefined} id - The board's id.
  * @param {BoardDataFromRequestBody} body - New information about the board
  * @returns {Promise<Board|null>} Promise object represents updated board or null
  */
 const update = async (
-  id: string,
+  id: string | undefined,
   body: IBoardDataFromRequestBody
 ): Promise<IBoard | null> => {
   const { title, columns } = body;
@@ -71,10 +71,10 @@ const update = async (
 
 /**
  * Delete board by board's id
- * @param {string} id - The board's id.
+ * @param {string|undefined} id - The board's id.
  * @returns {Promise<null|true>} Promise object represents null or true
  */
-const del = async (id: string): Promise<null | true> => {
+const del = async (id: string | undefined): Promise<null | true> => {
   const index = BOARDS.findIndex((board) => board.id === id);
   if (index < 0) {
     return null;
