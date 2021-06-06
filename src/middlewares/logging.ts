@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { createLogger, format, transports } from 'winston';
 
 const logger = createLogger({
@@ -23,10 +23,11 @@ const logger = createLogger({
   ],
 });
 
-const logInfo = (req: Request, res: Response) => {
-  const { method, url, params, query, body } = req;
+const logInfo = (req: Request, res: Response, next: NextFunction) => {
+  const { method, url, query, body } = req;
   const { status } = res;
-  logger.info(JSON.stringify({ method, url, params, query, status, body }));
+  logger.info(JSON.stringify({ method, url, query, status, body }));
+  next();
 };
 
 const logError = (error: string) => {
