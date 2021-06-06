@@ -3,7 +3,11 @@ import { createLogger, format, transports } from 'winston';
 
 const logger = createLogger({
   level: 'silly',
-  format: format.combine(format.colorize(), format.cli(), format.timestamp()),
+  format: format.combine(
+    format.colorize(),
+    format.cli(),
+    format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' })
+  ),
   transports: [
     new transports.Console(),
     new transports.File({
@@ -25,4 +29,13 @@ const logInfo = (req: Request, res: Response) => {
   logger.info(JSON.stringify({ method, url, params, query, status, body }));
 };
 
-export { logger, logInfo };
+const logError = (error: string) => {
+  logger.error(JSON.stringify({ error }));
+  // process.exitCode = 1;
+  // process.exit(1);
+  setTimeout(() => {
+    process.exit(1);
+  }, 1000);
+};
+
+export { logger, logInfo, logError };

@@ -1,4 +1,4 @@
 import { catchAndLogErrors, wrapper, CustomError } from './errorsHandling';
-import { logger, logInfo } from './logging';
+import { logger, logInfo, logError } from './logging';
 
-export { logger, logInfo, catchAndLogErrors, wrapper, CustomError };
+export { logger, logInfo, logError, catchAndLogErrors, wrapper, CustomError };
