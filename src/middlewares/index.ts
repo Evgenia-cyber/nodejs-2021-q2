@@ -1,4 +1,19 @@
-import { catchAndLogErrors, wrapper, CustomError } from './errorsHandling';
-import { logger, logInfo, logError } from './logging';
+import {
+  catchAndLogErrors,
+  wrapper,
+  CustomError,
+  logError,
+} from './errorsHandling';
+import { logInfo } from './logging';
+import { pageNotFound } from './pageNotFound';
+import { serverIsRunning } from './serverIsRunning';
 
-export { logger, logInfo, logError, catchAndLogErrors, wrapper, CustomError };
+export {
+  logInfo,
+  logError,
+  catchAndLogErrors,
+  wrapper,
+  CustomError,
+  pageNotFound,
+  serverIsRunning,
+};

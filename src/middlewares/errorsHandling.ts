@@ -1,5 +1,6 @@
 import { NextFunction, Request, RequestHandler, Response } from 'express';
-import { logger } from './logging';
+import { formateJSONstringify } from '../utils';
+import { logger } from '../common/logger';
 import { StatusCode, Messages } from '../types/statusCodes';
 
 interface IError {
@@ -33,7 +34,9 @@ const catchAndLogErrors = async (
 
   await res.status(errorStatus).json({ error: errorMessage });
 
-  logger.error(JSON.stringify({ status: errorStatus, error: errorMessage }));
+  logger.error(
+    formateJSONstringify({ status: errorStatus, error: errorMessage })
+  );
 
   next();
 };
@@ -45,10 +48,17 @@ const wrapper = (func: RequestHandler) => async (
 ) => {
   try {
     await func(req, res, next);
-    next();
   } catch (err) {
     next(err);
   }
 };
 
-export { catchAndLogErrors, wrapper, CustomError };
+const logError = (error: string) => {
+  const status = StatusCode.INTERNAL_SERVER_ERROR;
+  logger.error(formateJSONstringify({ status, error }));
+  setTimeout(() => {
+    process.exit(1);
+  }, 1000);
+};
+
+export { catchAndLogErrors, wrapper, CustomError, logError };
