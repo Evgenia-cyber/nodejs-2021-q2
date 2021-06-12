@@ -88,3 +88,37 @@ npm run build
 ```
 npm run dev
 ```
+
+## Starts app with Docker
+
+1. Build images
+
+```
+docker-compose build
+```
+
+2. Starts and attaches containers
+
+```
+docker-compose up
+```
+
+Scan images for security vulnerabilities
+
+```
+docker scan image-name
+```
+
+Push built images to repository on Docker Hub
+
+```
+docker-compose push
+```
+
+## Stops app with Docker
+
+Stops containers and removes containers, networks, volumes and images
+
+```
+docker-compose down
+```

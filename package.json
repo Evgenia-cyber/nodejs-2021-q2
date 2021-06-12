@@ -10,7 +10,7 @@
   "main": "build/server.js",
   "scripts": {
     "build": "tsc",
-    "dev": "cross-env nodemon",
+    "dev": "cross-env nodemon --exitcrash",
     "start": "cross-env ts-node src/server.ts",
     "doc": "cross-env ./node_modules/.bin/jsdoc -c jsdoc.json",
     "lint": "eslint --ext .js,.ts --fix src/",
