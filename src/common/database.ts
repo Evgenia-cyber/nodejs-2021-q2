@@ -7,15 +7,16 @@ import {
   POSTGRES_HOST,
 } from './config';
 import { User } from '../entities/User';
+import { Board } from '../entities/Board';
 
 const dbConfig: ConnectionOptions = {
   type: 'postgres',
-  host: POSTGRES_HOST || 'localhost',
+  host: POSTGRES_HOST || 'postgres',
   port: Number(POSTGRES_PORT) || 5432,
   username: POSTGRES_USER || 'postgres',
   password: POSTGRES_PASSWORD || 'postgres',
   database: POSTGRES_DB || 'postgres',
-  entities: [User],
+  entities: [User, Board],
   synchronize: true,
 };
 

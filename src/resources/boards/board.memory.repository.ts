@@ -1,6 +1,5 @@
-import { BOARDS } from '../data/data';
-import { Board } from './board.model';
-import { Column } from '../columns/column.model';
+import { getRepository } from 'typeorm';
+import { Board } from '../../entities/Board';
 import { IBoard, IBoardDataFromRequestBody } from './board.types';
 
 /**
@@ -18,7 +17,10 @@ import { IBoard, IBoardDataFromRequestBody } from './board.types';
  * Get all boards
  * @returns {Promise<Board[]>} Promise object represents an array of all boards or an empty array
  */
-const getAll = async (): Promise<IBoard[] | []> => BOARDS;
+const getAll = async (): Promise<IBoard[] | []> => {
+  const boardRepository = getRepository(Board);
+  return boardRepository.find();
+};
 
 /**
  * Create new board
@@ -26,13 +28,12 @@ const getAll = async (): Promise<IBoard[] | []> => BOARDS;
  * @returns {Promise<Board>} Promise object represents new board
  */
 const create = async (body: IBoardDataFromRequestBody): Promise<IBoard> => {
-  const { title, columns } = body;
-  const boardColumns = columns.map(
-    (column) => new Column({ title: column.title, order: column.order })
-  );
-  const newBoard = new Board({ title, columns: boardColumns });
-  BOARDS.push(newBoard);
-  return newBoard;
+  const boardRepository = getRepository(Board);
+  const board = new Board();
+  return boardRepository.save({
+    ...board,
+    ...body,
+  });
 };
 
 /**
@@ -41,9 +42,10 @@ const create = async (body: IBoardDataFromRequestBody): Promise<IBoard> => {
  * @returns {Promise<Board|null>} Promise object represents board or null
  */
 const getById = async (id: string | undefined): Promise<IBoard | null> => {
-  const boardById = BOARDS.find((board) => board.id === id);
-  if (!boardById) return null;
-  return boardById;
+  const boardRepository = getRepository(Board);
+  const board = await boardRepository.findOne({ id });
+  if (!board) return null;
+  return board;
 };
 
 /**
@@ -56,17 +58,13 @@ const update = async (
   id: string | undefined,
   body: IBoardDataFromRequestBody
 ): Promise<IBoard | null> => {
-  const { title, columns } = body;
-  const index = BOARDS.findIndex((board) => board.id === id);
-  if (index !== -1) {
-    let updatedBoard = BOARDS[index];
-    if (updatedBoard && updatedBoard.id) {
-      updatedBoard = { ...updatedBoard, title, columns };
-      BOARDS[index] = updatedBoard;
-      return updatedBoard;
-    }
-  }
-  return null;
+  const boardRepository = getRepository(Board);
+  const board = await boardRepository.findOne({ id });
+  if (!board) return null;
+  return boardRepository.save({
+    ...board,
+    ...body,
+  });
 };
 
 /**
@@ -75,11 +73,12 @@ const update = async (
  * @returns {Promise<null|true>} Promise object represents null or true
  */
 const del = async (id: string | undefined): Promise<null | true> => {
-  const index = BOARDS.findIndex((board) => board.id === id);
-  if (index < 0) {
-    return null;
-  }
-  BOARDS.splice(index, 1);
+  const boardRepository = getRepository(Board);
+  const board = await boardRepository.findOne({ id });
+  if (!board) return null;
+  boardRepository.delete({
+    id,
+  });
   return true;
 };
 
