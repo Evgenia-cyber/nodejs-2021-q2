@@ -8,6 +8,7 @@ import {
 } from './config';
 import { User } from '../entities/User';
 import { Board } from '../entities/Board';
+import { Task } from '../entities/Task';
 
 const dbConfig: ConnectionOptions = {
   type: 'postgres',
@@ -16,7 +17,7 @@ const dbConfig: ConnectionOptions = {
   username: POSTGRES_USER || 'postgres',
   password: POSTGRES_PASSWORD || 'postgres',
   database: POSTGRES_DB || 'postgres',
-  entities: [User, Board],
+  entities: [User, Board, Task],
   synchronize: true,
 };
 

@@ -1,5 +1,5 @@
-import { TASKS } from '../data/data';
-import { Task } from './task.model';
+import { getRepository, Like } from 'typeorm';
+import { Task } from '../../entities/Task';
 import { ITask, ITaskDataFromRequestBody } from './task.types';
 
 /**
@@ -16,13 +16,14 @@ import { ITask, ITaskDataFromRequestBody } from './task.types';
  * @property {string|null} task.columnId - The task's column id.
  */
 
-let tasks = TASKS;
-
 /**
  * Get all tasks
  * @returns {Promise<Task[]>} Promise object represents an array of all tasks or an empty array
  */
-const getAll = async (): Promise<ITask[] | []> => tasks;
+const getAll = async (): Promise<ITask[] | []> => {
+  const taskRepository = getRepository(Task);
+  return taskRepository.find();
+};
 
 /**
  * Create new task
@@ -34,17 +35,13 @@ const create = async (
   boardId: string | undefined,
   body: ITaskDataFromRequestBody
 ): Promise<ITask> => {
-  const { title, order, description, userId, columnId } = body;
-  const newTask = new Task({
-    title,
-    order,
-    description,
-    userId,
+  const taskRepository = getRepository(Task);
+  const task = new Task();
+  return taskRepository.save({
+    ...task,
+    ...body,
     boardId,
-    columnId,
   });
-  tasks.push(newTask);
-  return newTask;
 };
 
 /**
@@ -57,11 +54,10 @@ const getById = async (
   boardId: string | undefined,
   taskId: string | undefined
 ): Promise<ITask | null> => {
-  const taskById = tasks.find(
-    (task) => task.boardId === boardId && task.id === taskId
-  );
-  if (!taskById) return null;
-  return taskById;
+  const taskRepository = getRepository(Task);
+  const task = await taskRepository.findOne({ where: { boardId, id: taskId } });
+  if (!task) return null;
+  return task;
 };
 
 /**
@@ -76,27 +72,13 @@ const update = async (
   taskId: string | undefined,
   body: ITaskDataFromRequestBody
 ): Promise<ITask | null> => {
-  const { title, order, description, userId, columnId } = body;
-  const index = tasks.findIndex(
-    (task) => task.boardId === boardId && task.id === taskId
-  );
-  if (index !== -1) {
-    let updatedTask = tasks[index];
-    if (updatedTask && updatedTask.id) {
-      updatedTask = {
-        ...updatedTask,
-        title,
-        order,
-        description,
-        userId,
-        boardId,
-        columnId,
-      };
-      tasks[index] = updatedTask;
-      return updatedTask;
-    }
-  }
-  return null;
+  const taskRepository = getRepository(Task);
+  const task = await taskRepository.findOne({ where: { boardId, id: taskId } });
+  if (!task) return null;
+  return taskRepository.save({
+    ...task,
+    ...body,
+  });
 };
 
 /**
@@ -109,13 +91,10 @@ const del = async (
   boardId: string | undefined,
   taskId: string | undefined
 ): Promise<null | true> => {
-  const index = tasks.findIndex(
-    (task) => task.boardId === boardId && task.id === taskId
-  );
-  if (index < 0) {
-    return null;
-  }
-  tasks.splice(index, 1);
+  const taskRepository = getRepository(Task);
+  const task = await taskRepository.findOne({ where: { boardId, id: taskId } });
+  if (!task) return null;
+  taskRepository.delete(task);
   return true;
 };
 
@@ -124,8 +103,11 @@ const del = async (
  * @param {string|undefined} boardId - The board's id - ID of the board this tasks belongs to
  * @returns {Promise<true>} Promise object represents true
  */
-const deleteTasksWhenBoardDeleted = async (boardId: string|undefined): Promise<true> => {
-  tasks = tasks.filter((task) => task.boardId !== boardId);
+const deleteTasksWhenBoardDeleted = async (
+  boardId: string | undefined
+): Promise<true> => {
+  const taskRepository = getRepository(Task);
+  taskRepository.delete({ boardId });
   return true;
 };
 
@@ -134,14 +116,21 @@ const deleteTasksWhenBoardDeleted = async (boardId: string|undefined): Promise<t
  * @param {string|undefined} userId - The user's id - ID of the user this tasks belongs to
  * @returns {Promise<true>} Promise object represents true
  */
-const updateTasksWhenUserDeleted = async (userId: string|undefined): Promise<true> => {
-  tasks = tasks.map((task) => {
+const updateTasksWhenUserDeleted = async (
+  userId: string | undefined
+): Promise<true | null> => {
+  const taskRepository = getRepository(Task);
+  const tasks = await taskRepository.find({
+    userId: Like(`%${userId}%`),
+  });
+  const updatedTasks = tasks.map((task) => {
     const copyTask = task;
     if (copyTask.userId === userId) {
       copyTask.userId = null;
     }
     return copyTask;
   });
+  taskRepository.save(updatedTasks);
   return true;
 };
 

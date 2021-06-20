@@ -80,11 +80,10 @@ const update = async (
  */
 const del = async (id: string | undefined): Promise<null | true> => {
   const userRepository = getRepository(User);
-  const user = await userRepository.findOne({ id });
-  if (!user) return null;
-  userRepository.delete({
+  const user = await userRepository.delete({
     id,
   });
+  if (!user) return null;
   return true;
 };
 

@@ -74,11 +74,10 @@ const update = async (
  */
 const del = async (id: string | undefined): Promise<null | true> => {
   const boardRepository = getRepository(Board);
-  const board = await boardRepository.findOne({ id });
-  if (!board) return null;
-  boardRepository.delete({
+  const board = await boardRepository.delete({
     id,
   });
+  if (!board) return null;
   return true;
 };
 
