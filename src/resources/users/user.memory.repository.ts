@@ -1,5 +1,5 @@
-import { USERS } from '../data/data';
-import { User } from './user.model';
+import { getRepository } from 'typeorm';
+import { User } from '../../entities/User';
 import { IUserDataFromRequestBody, IUser } from './user.types';
 
 /**
@@ -19,7 +19,10 @@ import { IUserDataFromRequestBody, IUser } from './user.types';
  *
  * @returns {Promise<User[]>} Promise object represents an array of all users or an empty array
  */
-const getAll = async (): Promise<IUser[] | []> => USERS;
+const getAll = async (): Promise<IUser[] | []> => {
+  const userRepository = getRepository(User);
+  return userRepository.find();
+};
 
 /**
  * Create new user
@@ -28,10 +31,12 @@ const getAll = async (): Promise<IUser[] | []> => USERS;
  * @returns {Promise<User>} Promise object represents new user
  */
 const create = async (body: IUserDataFromRequestBody): Promise<IUser> => {
-  const { name, login, password } = body;
-  const newUser = new User({ name, login, password });
-  USERS.push(newUser);
-  return newUser;
+  const userRepository = getRepository(User);
+  const user = new User();
+  return userRepository.save({
+    ...user,
+    ...body,
+  });
 };
 
 /**
@@ -40,10 +45,11 @@ const create = async (body: IUserDataFromRequestBody): Promise<IUser> => {
  * @param {string|undefined} id - The user's id.
  * @returns {Promise<User|null>} Promise object represents user or null
  */
-const getById = async (id: string|undefined): Promise<IUser | null> => {
-  const userById = USERS.find((user) => user.id === id);
-  if (!userById) return null;
-  return userById;
+const getById = async (id: string | undefined): Promise<IUser | null> => {
+  const userRepository = getRepository(User);
+  const user = await userRepository.findOne({ id });
+  if (!user) return null;
+  return user;
 };
 
 /**
@@ -54,20 +60,16 @@ const getById = async (id: string|undefined): Promise<IUser | null> => {
  * @returns {Promise<User|null>} Promise object represents updated user or null
  */
 const update = async (
-  id: string|undefined ,
+  id: string | undefined,
   body: IUserDataFromRequestBody
 ): Promise<IUser | null> => {
-  const { name, login, password } = body;
-  const index = USERS.findIndex((user) => user.id === id);
-  if (index !== -1) {
-    let updatedUser = USERS[index];
-    if (updatedUser && updatedUser.id) {
-      updatedUser = { ...updatedUser, name, login, password };
-      USERS[index] = updatedUser;
-      return updatedUser;
-    }
-  }
-  return null;
+  const userRepository = getRepository(User);
+  const user = await userRepository.findOne({ id });
+  if (!user) return null;
+  return userRepository.save({
+    ...user,
+    ...body,
+  });
 };
 
 /**
@@ -76,12 +78,13 @@ const update = async (
  * @param {string|undefined} id - The user's id.
  * @returns {Promise<null|true>} Promise object represents null or true
  */
-const del = async (id: string|undefined ): Promise<null | true> => {
-  const index = USERS.findIndex((user) => user.id === id);
-  if (index < 0) {
-    return null;
-  }
-  USERS.splice(index, 1);
+const del = async (id: string | undefined): Promise<null | true> => {
+  const userRepository = getRepository(User);
+  const user = await userRepository.findOne({ id });
+  if (!user) return null;
+  userRepository.delete({
+    id,
+  });
   return true;
 };
 

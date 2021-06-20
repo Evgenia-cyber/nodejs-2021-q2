@@ -13,6 +13,7 @@ const {
   POSTGRES_USER,
   POSTGRES_PASSWORD,
   POSTGRES_DB,
+  POSTGRES_HOST,
 } = process.env;
 
 export {
@@ -25,4 +26,5 @@ export {
   POSTGRES_USER,
   POSTGRES_PASSWORD,
   POSTGRES_DB,
+  POSTGRES_HOST,
 };
