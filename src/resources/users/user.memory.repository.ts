@@ -66,6 +66,7 @@ const update = async (
   const userRepository = getRepository(User);
   const user = await userRepository.findOne({ id });
   if (!user) return null;
+  console.log('user', user);
   return userRepository.save({
     ...user,
     ...body,
