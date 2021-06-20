@@ -1,0 +1,15 @@
+{
+  "source": {
+    "include": ["src"],
+    "includePattern": "\\.(jsx|js|ts|tsx)$",
+    "excludePattern": "(node_modules/|jsdocs)"
+  },
+  "plugins": ["plugins/markdown", "node_modules/better-docs/typescript"],
+  "opts": {
+    "encoding": "utf8",
+    "recurse": true,
+    "destination": "./jsdocs/",
+    "template": "node_modules/better-docs",
+    "readme": "./README.md"
+  }
+}
