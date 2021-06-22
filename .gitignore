@@ -2,3 +2,4 @@ node_modules
 jsdocs
 build
 log
+.env
