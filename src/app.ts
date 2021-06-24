@@ -11,7 +11,7 @@ import {
   logInfo,
   logError,
   pageNotFound,
-  serverIsRunning
+  serverIsRunning,
 } from './middlewares';
 
 const app = express();
@@ -39,12 +39,22 @@ process.on('uncaughtException', (err: Error, origin: string) => {
   logError(`Uncaught exception: ${err}. Exception origin: ${origin}`);
 });
 
-// throw Error('Oops!');
+/*
+// Test for uncaughtException
+setTimeout(()=>{
+  throw new Error ('ooooops')
+}, 2000);
+*/
 
 process.on('unhandledRejection', (reason, promise) => {
   logError(`Unhandled Rejection at: ${promise}, reason: ${reason}`);
 });
 
-// Promise.reject(Error('Oops!'));
+/*
+ // Test for unhandledRejection
+setTimeout(() => {
+  Promise.reject(new Error('Oops!'))
+}, 1500);
+*/
 
 export default app;

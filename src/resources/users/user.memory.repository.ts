@@ -64,9 +64,8 @@ const update = async (
   body: IUserDataFromRequestBody
 ): Promise<IUser | null> => {
   const userRepository = getRepository(User);
-  const user = await userRepository.findOne({ id });
+  const user = await getById( id );
   if (!user) return null;
-  console.log('user', user);
   return userRepository.save({
     ...user,
     ...body,

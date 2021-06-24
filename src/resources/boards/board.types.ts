@@ -1,9 +1,8 @@
-// import { IColumn } from '../columns/column.types';
+import { IColumn } from '../columns/column.types';
 
 interface IBoardDataFromRequestBody {
   title: string;
-  columns: string
-  // columns: Array<IColumn>;
+  columns: Array<IColumn>;
 }
 
 interface IBoard extends IBoardDataFromRequestBody {

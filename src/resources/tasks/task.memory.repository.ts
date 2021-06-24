@@ -1,4 +1,4 @@
-import { getRepository, Like } from 'typeorm';
+import { getRepository } from 'typeorm';
 import { Task } from '../../entities/Task';
 import { ITask, ITaskDataFromRequestBody } from './task.types';
 
@@ -73,7 +73,7 @@ const update = async (
   body: ITaskDataFromRequestBody
 ): Promise<ITask | null> => {
   const taskRepository = getRepository(Task);
-  const task = await taskRepository.findOne({ where: { boardId, id: taskId } });
+  const task = await getById(boardId, taskId);
   if (!task) return null;
   return taskRepository.save({
     ...task,
@@ -92,7 +92,7 @@ const del = async (
   taskId: string | undefined
 ): Promise<null | true> => {
   const taskRepository = getRepository(Task);
-  const task = await taskRepository.findOne({ where: { boardId, id: taskId } });
+  const task = await getById(boardId, taskId);
   if (!task) return null;
   taskRepository.delete(task);
   return true;
@@ -120,17 +120,18 @@ const updateTasksWhenUserDeleted = async (
   userId: string | undefined
 ): Promise<true | null> => {
   const taskRepository = getRepository(Task);
-  const tasks = await taskRepository.find({
-    userId: Like(`%${userId}%`),
-  });
+  const tasks = await taskRepository
+    .createQueryBuilder('task')
+    .where('task.userId like :userId', { userId: `%${userId}%` })
+    .getMany();
+  if (!tasks) return null;
   const updatedTasks = tasks.map((task) => {
     const copyTask = task;
-    if (copyTask.userId === userId) {
-      copyTask.userId = null;
-    }
+    copyTask.userId = null;
     return copyTask;
   });
-  taskRepository.save(updatedTasks);
+  const res = await taskRepository.save(updatedTasks);
+  if (!res) return null;
   return true;
 };
 

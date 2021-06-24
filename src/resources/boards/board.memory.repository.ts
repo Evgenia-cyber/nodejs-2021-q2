@@ -19,7 +19,7 @@ import { IBoard, IBoardDataFromRequestBody } from './board.types';
  */
 const getAll = async (): Promise<IBoard[] | []> => {
   const boardRepository = getRepository(Board);
-  return boardRepository.find();
+  return boardRepository.find({ relations: ['columns'] });
 };
 
 /**
@@ -29,11 +29,7 @@ const getAll = async (): Promise<IBoard[] | []> => {
  */
 const create = async (body: IBoardDataFromRequestBody): Promise<IBoard> => {
   const boardRepository = getRepository(Board);
-  const board = new Board();
-  return boardRepository.save({
-    ...board,
-    ...body,
-  });
+  return boardRepository.save(body);
 };
 
 /**
@@ -43,7 +39,10 @@ const create = async (body: IBoardDataFromRequestBody): Promise<IBoard> => {
  */
 const getById = async (id: string | undefined): Promise<IBoard | null> => {
   const boardRepository = getRepository(Board);
-  const board = await boardRepository.findOne({ id });
+  const board = await boardRepository.findOne({
+    where: { id },
+    relations: ['columns'],
+  });
   if (!board) return null;
   return board;
 };
@@ -59,7 +58,7 @@ const update = async (
   body: IBoardDataFromRequestBody
 ): Promise<IBoard | null> => {
   const boardRepository = getRepository(Board);
-  const board = await boardRepository.findOne({ id });
+  const board = await getById(id);
   if (!board) return null;
   return boardRepository.save({
     ...board,

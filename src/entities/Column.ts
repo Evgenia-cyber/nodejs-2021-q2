@@ -1,4 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+// eslint-disable-next-line import/no-cycle
+import { Board } from './Board';
 
 @Entity()
 class MyColumn {
@@ -10,6 +12,11 @@ class MyColumn {
 
   @Column('integer')
   order: number = 0;
+
+  @ManyToOne(() => Board, (board) => board.columns, {
+    onDelete: 'CASCADE',
+  })
+  board: Board;
 }
 
 export { MyColumn };
