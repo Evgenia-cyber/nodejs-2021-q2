@@ -122,3 +122,23 @@ Stops containers and removes containers, networks, volumes and images
 ```
 docker-compose down
 ```
+
+## Works with migrations (postrges and typeorm)
+
+If no ./src/migrations, create its and run app:
+
+```
+npm run start:migration
+```
+
+If ./src/migrations exists, use:
+
+```
+npm run dev
+```
+
+or
+
+```
+npm run start
+```

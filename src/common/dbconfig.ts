@@ -20,13 +20,16 @@ const dbConfig: ConnectionOptions = {
   username: POSTGRES_USER,
   password: POSTGRES_PASSWORD,
   database: POSTGRES_DB,
-  synchronize: true,
+  // synchronize: true,
+  synchronize: false,
   logging: true,
   entities: ['src/entities/*.ts'],
-  // migrations: ['src/migrations/**/*.ts'],
-  // migrationsRun: true,
-  // cli: {
-  //   migrationsDir: '/src/migration'
-  // }
+  migrations: ['src/migrations/*.ts'],
+  migrationsRun: true,
+  cli: {
+    entitiesDir: 'src/entities',
+    migrationsDir: '/src/migrations',
+  },
 };
-export { dbConfig };
+
+export default dbConfig;
