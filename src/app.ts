@@ -25,8 +25,6 @@ app.use('/', serverIsRunning);
 
 app.use(logInfo);
 
-app.get('/ping', (_req, res) => res.send('pong'));
-
 app.use('/users', userRouter);
 app.use('/boards', boardRouter);
 boardRouter.use('/:boardId/tasks', taskRouter);

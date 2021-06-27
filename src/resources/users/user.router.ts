@@ -5,6 +5,8 @@ import { usersService } from './user.service';
 import { tasksService } from '../tasks/task.service';
 import { StatusCode, Messages } from '../../types/statusCodes';
 
+const bcrypt = require('bcryptjs');
+
 const router = express.Router();
 
 /** get all users */
@@ -19,11 +21,13 @@ router.route('/').get(
 router.route('/').post(
   wrapper(async (req: Request, res: Response) => {
     const { body } = req;
-    const { name, login, password } = body;
+    const { name, login } = body;
+    let { password } = body;
     if (!name || !login || !password) {
       throw new CustomError(StatusCode.BAD_REQUEST, Messages.BAD_REQUEST);
     }
-    const newUser = await usersService.create(body);
+    password = bcrypt.hashSync(password, 10);
+    const newUser = await usersService.create({ name, login, password });
     await res.status(StatusCode.CREATED).json(User.toResponse(newUser));
   })
 );
