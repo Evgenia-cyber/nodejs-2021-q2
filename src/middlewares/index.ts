@@ -7,6 +7,7 @@ import {
 import { logInfo } from './logging';
 import { pageNotFound } from './pageNotFound';
 import { serverIsRunning } from './serverIsRunning';
+import { validate } from './validate';
 
 export {
   logInfo,
@@ -16,4 +17,5 @@ export {
   CustomError,
   pageNotFound,
   serverIsRunning,
+  validate,
 };

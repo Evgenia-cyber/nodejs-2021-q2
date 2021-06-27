@@ -13,6 +13,7 @@ import {
   logError,
   pageNotFound,
   serverIsRunning,
+  validate,
 } from './middlewares';
 
 const app = express();
@@ -27,6 +28,7 @@ app.use('/', serverIsRunning);
 app.use(logInfo);
 
 app.use('/login', loginRouter);
+app.use(validate);
 
 app.use('/users', userRouter);
 app.use('/boards', boardRouter);

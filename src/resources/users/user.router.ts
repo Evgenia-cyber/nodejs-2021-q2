@@ -6,8 +6,6 @@ import { usersService } from './user.service';
 import { tasksService } from '../tasks/task.service';
 import { StatusCode, Messages } from '../../types/statusCodes';
 
-// const bcrypt = require('bcryptjs');
-
 const router = express.Router();
 
 /** get all users */

@@ -19,7 +19,14 @@ router.route('/').post(
     const user = await usersService.getUserByLogin(login);
     if (user) {
       const matches = bcrypt.compareSync(password, user.password);
-      if (matches && JWT_SECRET_KEY) {
+
+      if (!JWT_SECRET_KEY) {
+        throw new CustomError(
+          StatusCode.FORBIDDEN,
+          `No secret key. ${Messages.FORBIDDEN}`
+        );
+      }
+      if (matches) {
         const token = jwt.sign(
           { id: user.id, login: user.login },
           JWT_SECRET_KEY,
@@ -27,7 +34,7 @@ router.route('/').post(
             expiresIn: 60 * 60 * 24,
           }
         );
-        res.status(StatusCode.OK).json({
+        await res.status(StatusCode.OK).json({
           token,
         });
       } else {
