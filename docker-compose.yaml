@@ -1,0 +1,45 @@
+version: '3'
+
+services:
+  nodejs:
+    image: kurineva/nodejs
+    build: .
+    ports:
+      - ${PORT}:${PORT}
+    depends_on:
+      - postgres
+    env_file: .env
+    environment:
+      - PORT=${PORT}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_HOST=${POSTGRES_HOST}
+    volumes:
+      - ./:/user/app
+    networks:
+      - backend
+    restart: always
+
+  postgres:
+    image: kurineva/postgres
+    build: ./database/
+    ports:
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
+    env_file: .env
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    volumes:
+      - postgresdata:/var/lib/postgresql/data
+    networks:
+      - backend
+    restart: always
+
+volumes:
+  postgresdata:
+
+networks:
+  backend:
+    driver: bridge

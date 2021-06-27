@@ -1,0 +1,10 @@
+{
+  "ignore": ["node_modules"],
+  "watch": ["./src"],
+  "legacyWatch": true,
+  "exec": "npm start",
+  "ext": ".ts",
+  "execMap": {
+    "ts": "node -r ts-node/register"
+  }
+}

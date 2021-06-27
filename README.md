@@ -70,3 +70,75 @@ npm run lint
 Press <kbd>F5</kbd> to debug.
 
 For more information, visit: https://code.visualstudio.com/docs/editor/debugging
+
+## Generating a documentation based on JSDoc descriptions
+
+```
+npm run doc
+```
+
+## Compiling .ts files to .js
+
+```
+npm run build
+```
+
+## Running application for development
+
+```
+npm run dev
+```
+
+## Starts app with Docker
+
+1. Build images
+
+```
+docker-compose build
+```
+
+2. Starts and attaches containers
+
+```
+docker-compose up
+```
+
+Scan images for security vulnerabilities
+
+```
+docker scan image-name
+```
+
+Push built images to repository on Docker Hub
+
+```
+docker-compose push
+```
+
+## Stops app with Docker
+
+Stops containers and removes containers, networks, volumes and images
+
+```
+docker-compose down
+```
+
+## Works with migrations (postrges and typeorm)
+
+If no ./src/migrations, create its and run app:
+
+```
+npm run start:migration
+```
+
+If ./src/migrations exists, use:
+
+```
+npm run dev
+```
+
+or
+
+```
+npm run start
+```
