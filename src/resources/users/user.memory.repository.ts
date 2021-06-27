@@ -64,7 +64,7 @@ const update = async (
   body: IUserDataFromRequestBody
 ): Promise<IUser | null> => {
   const userRepository = getRepository(User);
-  const user = await getById( id );
+  const user = await getById(id);
   if (!user) return null;
   return userRepository.save({
     ...user,
@@ -87,4 +87,19 @@ const del = async (id: string | undefined): Promise<null | true> => {
   return true;
 };
 
-export { getAll, create, getById, update, del };
+/**
+ * Get user by user's login
+ *
+ * @param {string|undefined} login - The user's login.
+ * @returns {Promise<User|null>} Promise object represents user or null
+ */
+const getUserByLogin = async (
+  login: string | undefined
+): Promise<IUser | null> => {
+  const userRepository = getRepository(User);
+  const user = await userRepository.findOne({ login });
+  if (!user) return null;
+  return user;
+};
+
+export { getAll, create, getById, update, del, getUserByLogin };

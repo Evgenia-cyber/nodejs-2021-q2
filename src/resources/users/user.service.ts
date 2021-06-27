@@ -4,6 +4,7 @@ import {
   getById as getUserById,
   update as updateUser,
   del as delUser,
+  getUserByLogin as getByLogin,
 } from './user.memory.repository';
 import { IUser, IUserDataFromRequestBody } from './user.types';
 
@@ -56,4 +57,18 @@ const update = (id: string | undefined, body: IUserDataFromRequestBody) =>
  */
 const del = (id: string | undefined) => delUser(id);
 
-export const usersService = { getAll, getById, create, update, del };
+/**
+ * Get user by user's id
+ * @param {string|undefined} id - The user's id
+ * @returns {Promise<User|null>} - Returns a Promise object that is a user or null
+ */
+const getUserByLogin = (login: string | undefined) => getByLogin(login);
+
+export const usersService = {
+  getAll,
+  getById,
+  create,
+  update,
+  del,
+  getUserByLogin,
+};
